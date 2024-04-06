@@ -14,6 +14,8 @@ import at.fhv.lab1.eventbus.EventPublisher;
 @ComponentScan("at.fhv.lab1.commandclient")
 public class CommandClientApplication {
 
+    //TODO beispiel datensätze noch anlegen und testen
+
     private final EventPublisher publisher;
 
     public CommandClientApplication(EventPublisher publisher) {
