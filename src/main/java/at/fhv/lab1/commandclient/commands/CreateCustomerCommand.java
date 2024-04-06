@@ -1,4 +1,4 @@
-package at.fhv.lab1.commandclient;
+package at.fhv.lab1.commandclient.commands;
 
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -14,4 +14,12 @@ public class CreateCustomerCommand {
     private String name;
     private String address;
     private LocalDate dateOfBirth;
+
+
+    public boolean validate() {
+
+        return name != null && !name.isEmpty() &&
+                address != null && !address.isEmpty() &&
+                dateOfBirth != null;
+    }
 }

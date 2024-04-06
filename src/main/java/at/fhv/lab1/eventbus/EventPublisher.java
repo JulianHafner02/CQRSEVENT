@@ -1,7 +1,7 @@
 package at.fhv.lab1.eventbus;
 
 import at.fhv.lab1.eventbus.events.Event;
-import at.fhv.lab1.eventbus.events.BookRoomEvent;
+import at.fhv.lab1.eventbus.events.RoomBookedEvent;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -28,7 +28,7 @@ public class EventPublisher {
                 .block();
     }
 
-    public Boolean publishEvent(BookRoomEvent event) {
+    public Boolean publishEvent(RoomBookedEvent event) {
         return localApiClient
                 .post()
                 .uri("/event")
@@ -39,4 +39,7 @@ public class EventPublisher {
                 .bodyToMono(Boolean.class)
                 .block();
     }
+
+
+
 }

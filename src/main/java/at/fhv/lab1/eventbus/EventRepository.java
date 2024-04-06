@@ -1,7 +1,7 @@
 package at.fhv.lab1.eventbus;
 
 import at.fhv.lab1.eventbus.events.Event;
-import at.fhv.lab1.eventbus.events.BookRoomEvent;
+import at.fhv.lab1.eventbus.events.RoomBookedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class EventRepository {
         System.out.println("Processing Event");
     }
 
-    public void processEvent(BookRoomEvent event) {
+    public void processEvent(RoomBookedEvent event) {
         // TODO: store events in log/DB
         //events.add(event);
         // TODO: notify subscribed read repositories

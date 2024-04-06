@@ -9,9 +9,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class BookRoomEvent {
+public class RoomBookedEvent {
     private String roomNumber;
     private String customerId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+
 }

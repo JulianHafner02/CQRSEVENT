@@ -3,7 +3,7 @@ package at.fhv.lab1.eventbus.rest;
 import at.fhv.lab1.eventbus.EventPublisher;
 import at.fhv.lab1.eventbus.EventRepository;
 import at.fhv.lab1.eventbus.events.Event;
-import at.fhv.lab1.eventbus.events.BookRoomEvent;
+import at.fhv.lab1.eventbus.events.RoomBookedEvent;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,7 +27,7 @@ public class EventRestController {
     }
 
     @PostMapping(value = "/roombookedevent", consumes = "application/json")
-    public boolean addRoomBookedEvent(@RequestBody BookRoomEvent event) {
+    public boolean addRoomBookedEvent(@RequestBody RoomBookedEvent event) {
         // TODO: process event in repository
         repository.processEvent(event);
         System.out.println("Event received: " + event);
