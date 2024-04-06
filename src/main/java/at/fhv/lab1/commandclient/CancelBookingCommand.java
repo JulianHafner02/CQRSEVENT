@@ -1,33 +1,14 @@
 package at.fhv.lab1.commandclient;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@ToString
 public class CancelBookingCommand {
     private String reservationNumber;
-
-    // Konstruktor, Getter und Setter und ToString
-
-
-    public CancelBookingCommand(String reservationNumber) {
-        this.reservationNumber = reservationNumber;
-
-    }
-
-    public String getReservationNumber() {
-        return reservationNumber;
-    }
-
-    public void setReservationNumber(String reservationNumber) {
-        this.reservationNumber = reservationNumber;
-    }
-
-    @Override
-    public String toString() {
-        return "CancelBookingCommand{" +
-                "reservationNumber='" + reservationNumber + '\'' +
-                '}';
-    }
 }
