@@ -32,6 +32,15 @@ public class BookingRepository {
         return new HashSet<>(bookings);
     }
 
+    public Booking findById(String id) {
+        for (Booking booking : bookings) {
+            if (booking.getBookingId().equals(id)) {
+                return booking;
+            }
+        }
+        return null;
+    }
+
     public boolean isEmpty() {
         return bookings.isEmpty();
     }

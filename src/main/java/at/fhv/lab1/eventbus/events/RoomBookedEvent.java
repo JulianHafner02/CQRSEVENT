@@ -1,7 +1,10 @@
 package at.fhv.lab1.eventbus.events;
 
+import at.fhv.lab1.commandclient.domainmodel.Customer;
+import at.fhv.lab1.commandclient.domainmodel.Room;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -10,9 +13,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 public class RoomBookedEvent {
-    private String roomNumber;
-    private String customerId;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String bookingId;
+    private Room room;
+    private Customer customer;
+    private LocalDate startTime;
+    private LocalDate endTime;
 
 }

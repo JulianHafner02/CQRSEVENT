@@ -10,10 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class CancelBookingCommand {
-    private String reservationNumber;
+    private String bookingId;
 
-    public boolean validate() {
-        // Überprüfen Sie, ob die Reservierungsnummer nicht null oder leer ist
-        return reservationNumber != null && !reservationNumber.isEmpty();
-    }
+
 }

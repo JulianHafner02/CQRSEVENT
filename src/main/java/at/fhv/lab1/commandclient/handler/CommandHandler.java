@@ -4,6 +4,8 @@ import at.fhv.lab1.commandclient.EventPublisher;
 import at.fhv.lab1.commandclient.commands.BookRoomCommand;
 import at.fhv.lab1.commandclient.commands.CancelBookingCommand;
 import at.fhv.lab1.commandclient.commands.CreateCustomerCommand;
+import at.fhv.lab1.commandclient.domainmodel.Booking;
+import at.fhv.lab1.commandclient.domainmodel.Customer;
 import at.fhv.lab1.commandclient.repositories.BookingRepository;
 import at.fhv.lab1.commandclient.repositories.CustomerRepository;
 import at.fhv.lab1.commandclient.repositories.RoomRepository;
@@ -12,10 +14,11 @@ import at.fhv.lab1.eventbus.events.CustomerCreatedEvent;
 import at.fhv.lab1.eventbus.events.RoomBookedEvent;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
+
 @Component
 public class CommandHandler {
-
-    //TODO befehle auch ausführen und noch besser validieren mit den repositories
 
     private final EventPublisher eventPublisher;
     private final BookingRepository bookingRepository;
@@ -31,53 +34,85 @@ public class CommandHandler {
     }
 
 
-    public void handleBookRoomCommand(BookRoomCommand command) {
+    public void handleCommand(BookRoomCommand command) {
         // Validieren Sie den Befehl
-        if (!command.validate()) {
-            // Fehlerbehandlung für ungültige Befehle
-            throw new IllegalArgumentException("Ungültiger Buchungsbefehl.");
+
+        if (command.getCustomer() == null || command.getRoom() == null || command.getStartTime() == null || command.getEndTime() == null) {
+            // Handle null fields
+            // You can throw an exception or return an error message
+            System.out.println("Null fields");
+        } else if (command.getStartTime().isAfter(command.getEndTime())) {
+            // Handle invalid start and end time
+            // You can throw an exception or return an error message
+            System.out.println("Invalid start and end time");
+        } else if (!customerRepository.contains(command.getCustomer()) || !roomRepository.contains(command.getRoom())) {
+            // Handle non-existing customer or room
+            // You can throw an exception or return an error message
+            System.out.println("Non-existing customer or room");
+        } else {
+            bookingRepository.save(new Booking(command.getBookingId(), command.getRoom(), command.getCustomer(), command.getStartTime(), command.getEndTime()));
+            // Nach erfolgreicher Verarbeitung des Befehls, Ereignis erstellen und veröffentlichen
+            RoomBookedEvent event = new RoomBookedEvent();
+            event.setBookingId(command.getBookingId());
+            event.setRoom(command.getRoom());
+            event.setCustomer(command.getCustomer());
+            event.setStartTime(command.getStartTime());
+            event.setEndTime(command.getEndTime());
+            System.out.println(event);
+            eventPublisher.publishEvent(event);
         }
-        //TODO befehl auch ausführen
 
-        // Nach erfolgreicher Verarbeitung des Befehls, Ereignis erstellen und veröffentlichen
-        RoomBookedEvent event = new RoomBookedEvent();
-        event.setRoomNumber(command.getRoomNumber());
-        event.setCustomerId(command.getCustomerId());
-        event.setStartTime(command.getStartTime());
-        event.setEndTime(command.getEndTime());
 
-        eventPublisher.publishEvent(event);
     }
 
-    public void handleCancelBookingCommand(CancelBookingCommand command) {
+    public void handleCommand(CancelBookingCommand command) {
         // Validieren Sie den Befehl
-        if (!command.validate()) {
-            // Fehlerbehandlung für ungültige Befehle
-            throw new IllegalArgumentException("Ungültiger Stornierungsbefehl.");
+
+        if (!bookingRepository.contains(bookingRepository.findById(command.getBookingId()))) {
+            // Handle non-existing reservation
+            // You can throw an exception or return an error message
+            System.out.println("Non-existing reservation");
         }
-        // TODO Logik zur Stornierung der Buchung
+        else if (command.getBookingId() == null) {
+            // Handle null reservation number
+            // You can throw an exception or return an error message
+            System.out.println("Null reservation number");
+        }
+        else {
 
-        // Nach erfolgreicher Stornierung, Ereignis erstellen und veröffentlichen
-        BookingCancelledEvent event = new BookingCancelledEvent();
-        event.setReservationNumber(command.getReservationNumber());
-
-        eventPublisher.publishEvent(event);
+            bookingRepository.delete(bookingRepository.findById(command.getBookingId()));
+            // Nach erfolgreicher Stornierung, Ereignis erstellen und veröffentlichen
+            BookingCancelledEvent event = new BookingCancelledEvent();
+            event.setBookingId(command.getBookingId());
+            System.out.println(event);
+            eventPublisher.publishEvent(event);
+        }
     }
 
-    public void handleCreateCustomerCommand(CreateCustomerCommand command) {
+    public void handleCommand(CreateCustomerCommand command) {
         // Validieren Sie den Befehl
-        if (!command.validate()) {
-            // Fehlerbehandlung für ungültige Befehle
-            throw new IllegalArgumentException("Ungültiger Kunden erstellen Befehl.");
+        if (command.getName() == null || command.getAddress() == null || command.getDateOfBirth() == null) {
+            // Handle null fields
+            // You can throw an exception or return an error message
+            System.out.println("Null fields");
+
         }
-        // TODO Führen Sie den Befehl aus
+        else if (command.getDateOfBirth().isAfter(LocalDate.now())) {
+            // Handle invalid date of birth
+            // You can throw an exception or return an error message
+            System.out.println("Invalid date of birth");
+        }
+        else {
+            customerRepository.save(new Customer(command.getName(), command.getAddress(), command.getDateOfBirth()));
 
-        //Nach erfolgreicher Erstellung, Ereignis erstellen und veröffentlichen
-        CustomerCreatedEvent event = new CustomerCreatedEvent();
-        event.setName(command.getName());
-        event.setAddress(command.getAddress());
-        event.setDateOfBirth(command.getDateOfBirth());
+            //Nach erfolgreicher Erstellung, Ereignis erstellen und veröffentlichen
+            CustomerCreatedEvent event = new CustomerCreatedEvent();
+            event.setName(command.getName());
+            event.setAddress(command.getAddress());
+            event.setDateOfBirth(command.getDateOfBirth());
+            System.out.println(event);
+            eventPublisher.publishEvent(event);
+        }
 
-        eventPublisher.publishEvent(event);
     }
 }

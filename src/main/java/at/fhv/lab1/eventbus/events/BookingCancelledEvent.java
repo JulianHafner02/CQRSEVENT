@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 public class BookingCancelledEvent {
 
-    private String reservationNumber;
+    private String bookingId;
 
 
 }

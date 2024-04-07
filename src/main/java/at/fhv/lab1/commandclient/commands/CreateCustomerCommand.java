@@ -15,11 +15,4 @@ public class CreateCustomerCommand {
     private String address;
     private LocalDate dateOfBirth;
 
-
-    public boolean validate() {
-
-        return name != null && !name.isEmpty() &&
-                address != null && !address.isEmpty() &&
-                dateOfBirth != null;
-    }
 }
