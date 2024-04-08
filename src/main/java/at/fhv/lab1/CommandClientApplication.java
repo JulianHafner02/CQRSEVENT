@@ -27,7 +27,6 @@ import java.time.LocalDate;
 @ComponentScan("at.fhv.lab1.commandclient")
 public class CommandClientApplication {
 
-    //TODO beispiel datensätze noch anlegen und testen
 
     //private final EventPublisher publisher;
     private final RoomRepository roomRepository;

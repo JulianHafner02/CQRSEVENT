@@ -24,7 +24,7 @@ public class EventRestController {
     public boolean addEvent(@RequestBody Event event) {
         // TODO: process event in repository
         repository.processEvent(event);
-        System.out.println("Event received: " + event);
+        System.out.println("Event from CommandClient received: " + event);
         return true;
     }
 
@@ -32,7 +32,7 @@ public class EventRestController {
     public boolean addRoomBookedEvent(@RequestBody RoomBookedEvent event) {
         // TODO: process event in repository
         repository.processEvent(event);
-        System.out.println("Event received: " + event);
+        System.out.println("Event from CommandClient received: " + event);
         publisher.publishEvent(event);
         return true;
     }
@@ -41,7 +41,7 @@ public class EventRestController {
     public boolean addCustomerCreatedEvent(@RequestBody CustomerCreatedEvent event) {
         // TODO: process event in repository
         repository.processEvent(event);
-        System.out.println("Event received: " + event);
+        System.out.println("Event from CommandClient received: " + event);
         publisher.publishEvent(event);
         return true;
     }
@@ -50,7 +50,7 @@ public class EventRestController {
     public boolean addBookingCancelledEvent(@RequestBody BookingCancelledEvent event) {
         // TODO: process event in repository
         repository.processEvent(event);
-        System.out.println("Event received: " + event);
+        System.out.println("Event from CommandClient received: " + event);
         publisher.publishEvent(event);
         return true;
     }
