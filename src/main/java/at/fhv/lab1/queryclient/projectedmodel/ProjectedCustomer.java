@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ProjectedCustomer {
     private String name;
     private String address;

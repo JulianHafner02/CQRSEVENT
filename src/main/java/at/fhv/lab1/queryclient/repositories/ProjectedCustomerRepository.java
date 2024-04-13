@@ -1,10 +1,13 @@
 package at.fhv.lab1.queryclient.repositories;
 
+import at.fhv.lab1.eventbus.events.CustomerCreatedEvent;
 import at.fhv.lab1.queryclient.projectedmodel.ProjectedCustomer;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Repository
 public class ProjectedCustomerRepository {
 
     private final Set<ProjectedCustomer> projectedCustomers = new HashSet<>();
@@ -17,6 +20,15 @@ public class ProjectedCustomerRepository {
     // Contains method
     public boolean contains(ProjectedCustomer customer) {
         return projectedCustomers.contains(customer);
+    }
+
+    public ProjectedCustomer findByCustomerName(String customerName) {
+        for (ProjectedCustomer customer : projectedCustomers) {
+            if (customer.getName().equals(customerName)) {
+                return customer;
+            }
+        }
+        return null;
     }
 
     // Delete method
@@ -43,4 +55,5 @@ public class ProjectedCustomerRepository {
     public int count() {
         return projectedCustomers.size();
     }
+
 }

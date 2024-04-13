@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class GetFreeRooms {
     private LocalDate startDate;
     private LocalDate endDate;

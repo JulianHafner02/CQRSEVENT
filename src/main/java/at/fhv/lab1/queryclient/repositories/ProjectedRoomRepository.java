@@ -1,12 +1,17 @@
 package at.fhv.lab1.queryclient.repositories;
 
+
+import at.fhv.lab1.eventbus.events.RoomCreatedEvent;
 import at.fhv.lab1.queryclient.projectedmodel.ProjectedRoom;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Repository
 public class ProjectedRoomRepository {
 
     private final Set<ProjectedRoom> projectedRooms = new HashSet<>();
@@ -19,6 +24,15 @@ public class ProjectedRoomRepository {
     // Contains method
     public boolean contains(ProjectedRoom room) {
         return projectedRooms.contains(room);
+    }
+
+    public ProjectedRoom findByRoomNumber(String roomNumber) {
+        for (ProjectedRoom room : projectedRooms) {
+            if (room.getRoomNumber().equals(roomNumber)) {
+                return room;
+            }
+        }
+        return null;
     }
 
     // Delete method
@@ -46,6 +60,12 @@ public class ProjectedRoomRepository {
         return projectedRooms.size();
     }
 
+    public void deleteBookingsByDateRange(ProjectedRoom room, LocalDate fromDate, LocalDate toDate) {
+
+        findByRoomNumber(room.getRoomNumber()).getBookedFor().removeIf(date -> date.isEqual(fromDate) && date.isEqual(toDate));
+
+    }
+
     // Get all free rooms within a given date range and with specified capacity
     public Set<ProjectedRoom> getFreeRooms(LocalDate startDate, LocalDate endDate, int requiredCapacity) {
         return projectedRooms.stream()
@@ -67,5 +87,14 @@ public class ProjectedRoomRepository {
     // Check if there is an overlap between two date ranges
     private boolean isDateOverlap(LocalDate bookedDate, LocalDate startDate, LocalDate endDate) {
         return !startDate.isAfter(bookedDate) && !endDate.isBefore(bookedDate);
+    }
+
+    public void processEvent(RoomCreatedEvent event) {
+        if (!projectedRooms.contains(findByRoomNumber(event.getRoomNumber()))) {
+            projectedRooms.add(new ProjectedRoom(event.getRoomNumber(), event.getCapacity(), new ArrayList<>()));
+        }
+        else {
+            System.out.println("Room already exists");
+        }
     }
 }

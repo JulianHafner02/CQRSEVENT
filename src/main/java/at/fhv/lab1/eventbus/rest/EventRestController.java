@@ -2,10 +2,7 @@ package at.fhv.lab1.eventbus.rest;
 
 import at.fhv.lab1.eventbus.EventPublisher;
 import at.fhv.lab1.eventbus.EventRepository;
-import at.fhv.lab1.eventbus.events.BookingCancelledEvent;
-import at.fhv.lab1.eventbus.events.CustomerCreatedEvent;
-import at.fhv.lab1.eventbus.events.Event;
-import at.fhv.lab1.eventbus.events.RoomBookedEvent;
+import at.fhv.lab1.eventbus.events.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -54,4 +51,15 @@ public class EventRestController {
         publisher.publishEvent(event);
         return true;
     }
+
+    @PostMapping(value = "/roomcreatedevent", consumes = "application/json")
+    public boolean addBookingCancelledEvent(@RequestBody RoomCreatedEvent event) {
+        // TODO: process event in repository
+        repository.processEvent(event);
+        System.out.println("Event from CommandClient received: " + event);
+        publisher.publishEvent(event);
+        return true;
+    }
+
+
 }

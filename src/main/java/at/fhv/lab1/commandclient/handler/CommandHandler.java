@@ -4,14 +4,17 @@ import at.fhv.lab1.commandclient.EventPublisher;
 import at.fhv.lab1.commandclient.commands.BookRoomCommand;
 import at.fhv.lab1.commandclient.commands.CancelBookingCommand;
 import at.fhv.lab1.commandclient.commands.CreateCustomerCommand;
+import at.fhv.lab1.commandclient.commands.CreateRoomCommand;
 import at.fhv.lab1.commandclient.domainmodel.Booking;
 import at.fhv.lab1.commandclient.domainmodel.Customer;
+import at.fhv.lab1.commandclient.domainmodel.Room;
 import at.fhv.lab1.commandclient.repositories.BookingRepository;
 import at.fhv.lab1.commandclient.repositories.CustomerRepository;
 import at.fhv.lab1.commandclient.repositories.RoomRepository;
 import at.fhv.lab1.eventbus.events.BookingCancelledEvent;
 import at.fhv.lab1.eventbus.events.CustomerCreatedEvent;
 import at.fhv.lab1.eventbus.events.RoomBookedEvent;
+import at.fhv.lab1.eventbus.events.RoomCreatedEvent;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -115,4 +118,29 @@ public class CommandHandler {
         }
 
     }
+
+    public void handleCommand(CreateRoomCommand command) {
+        // Validieren Sie den Befehl
+        if (command.getRoomNumber() == null) {
+            // Handle null fields
+            // You can throw an exception or return an error message
+            System.out.println("Null fields");
+        }
+        else if (command.getCapacity() < 1) {
+            // Handle invalid capacity
+            // You can throw an exception or return an error message
+            System.out.println("Invalid capacity");
+        }
+        else {
+            roomRepository.save(new Room(command.getRoomNumber(), command.getCapacity()));
+            //Nach erfolgreicher Erstellung, Ereignis erstellen und veröffentlichen
+            RoomCreatedEvent event = new RoomCreatedEvent();
+            event.setRoomNumber(command.getRoomNumber());
+            event.setCapacity(command.getCapacity());
+            System.out.println(event);
+            eventPublisher.publishEvent(event);
+        }
+
+    }
+
 }

@@ -3,6 +3,7 @@ package at.fhv.lab1;
 import at.fhv.lab1.commandclient.commands.BookRoomCommand;
 import at.fhv.lab1.commandclient.commands.CancelBookingCommand;
 import at.fhv.lab1.commandclient.commands.CreateCustomerCommand;
+import at.fhv.lab1.commandclient.commands.CreateRoomCommand;
 import at.fhv.lab1.commandclient.domainmodel.Booking;
 import at.fhv.lab1.commandclient.domainmodel.Customer;
 import at.fhv.lab1.commandclient.domainmodel.Room;
@@ -21,11 +22,12 @@ import at.fhv.lab1.commandclient.handler.CommandHandler;
 
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 @SpringBootApplication
 @Configuration
 @ComponentScan("at.fhv.lab1.commandclient")
-public class CommandClientApplication {
+public class CommandClientApplication implements CommandLineRunner{
 
 
     //private final EventPublisher publisher;
@@ -33,6 +35,20 @@ public class CommandClientApplication {
     private final BookingRepository bookingRepository;
     private final CustomerRepository customerRepository;
     private final CommandHandler commandHandler;
+
+
+    //TODO Ansteuern über CommandRunner (cmd/cli) ohne große validierung der ders verwendet woars au wies
+    //TODO 2 clis (query and command)
+    //TODO UI für dern Bumms macha optional
+    //TODO Rollback der ganzen Events für die query sachen
+    //TODO alle queries sachen löschen
+    //TODO QueryHandler macha
+    //TODO Events in Datei speichern (text oder json) optional
+    //TODO Dokumentation macha (klassendiagramm und die ansteuerung der commands)
+    //TODO beschreibung wie ma da cli verwendet
+    //TODO create customer und create room wäre optional
+    //TODO bei da process events sött ma die write db apassa und ned nur die read db (oder nur die write db apassa und denn wieda events macha???)
+
 
 
 
@@ -50,22 +66,35 @@ public class CommandClientApplication {
         SpringApplication.run(CommandClientApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner run() throws Exception {
-        return args -> {
-            /*
-            Event event = new Event();
-            event.setContent("This is the content!");
-            event.setCustomer("Customer1");
-            event.setTimestamp(System.currentTimeMillis());
-            System.out.println("Result: " + publisher.publishEvent(event));
-            publisher.publishEvent(event);
-             */
+    public void run(String ... args) throws Exception {
 
-            System.out.println("Running");
+        /*
+        Event event = new Event();
+        event.setContent("This is the content!");
+        event.setCustomer("Customer1");
+        event.setTimestamp(System.currentTimeMillis());
+        System.out.println("Result: " + publisher.publishEvent(event));
+        publisher.publishEvent(event);
+         */
 
-            initialiseData();
-        };
+        System.out.println("Running");
+
+        initialiseData();
+
+        // Read input from the command line
+        Scanner scanner = new Scanner(System.in);
+        String input;
+        do {
+            System.out.println("Enter a command:");
+            input = scanner.nextLine();
+            System.out.println("You entered: " + input);
+        } while (!input.equals("exit"));
+
+
+
+
+        //TODO scan logic for commands and handle them accordingly
+
     }
 
     public void initialiseData() {
@@ -101,7 +130,12 @@ public class CommandClientApplication {
         CreateCustomerCommand createCustomerCommand2 = new CreateCustomerCommand("Jane Smith 2", "5678 Elm St", LocalDate.of(1985, 8, 20));
         commandHandler.handleCommand(createCustomerCommand1);
 
+        CreateRoomCommand createRoomCommand1 = new CreateRoomCommand("104", 4);
+        CreateRoomCommand createRoomCommand2 = new CreateRoomCommand("105", 2);
+        commandHandler.handleCommand(createRoomCommand1);
+
 
     }
+
 
 }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ProjectedRoom {
     private String roomNumber;
     private int capacity;
