@@ -62,7 +62,9 @@ public class ProjectedRoomRepository {
 
     public void deleteBookingsByDateRange(ProjectedRoom room, LocalDate fromDate, LocalDate toDate) {
 
-        findByRoomNumber(room.getRoomNumber()).getBookedFor().removeIf(date -> date.isEqual(fromDate) && date.isEqual(toDate));
+        room.getBookedFor().removeIf(date -> date.isEqual(fromDate));
+        room.getBookedFor().removeIf(date -> date.isEqual(toDate));
+
 
     }
 

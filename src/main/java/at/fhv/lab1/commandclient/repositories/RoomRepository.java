@@ -31,6 +31,15 @@ public class RoomRepository {
         return new HashSet<>(rooms);
     }
 
+    public Room findByRoomNumber(String roomNumber) {
+        for (Room room : rooms) {
+            if (room.getRoomNumber().equals(roomNumber)) {
+                return room;
+            }
+        }
+        return null;
+    }
+
     public boolean isEmpty() {
         return rooms.isEmpty();
     }

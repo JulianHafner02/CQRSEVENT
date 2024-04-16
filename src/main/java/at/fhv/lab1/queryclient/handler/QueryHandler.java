@@ -14,20 +14,22 @@ import at.fhv.lab1.queryclient.repositories.ProjectedCustomerRepository;
 import at.fhv.lab1.queryclient.repositories.ProjectedRoomRepository;
 import at.fhv.lab1.queryclient.repositories.ProjectedBookingRepository;
 import at.fhv.lab1.eventbus.EventRepository;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 @Component
 public class QueryHandler {
 
-    private final EventRepository eventRepository;
+    //private final EventRepository eventRepository;
     private final ProjectedCustomerRepository projectedCustomerRepository;
     private final ProjectedRoomRepository projectedRoomRepository;
     private final ProjectedBookingRepository projectedBookingRepository;
 
-    public QueryHandler(EventRepository eventRepository, ProjectedCustomerRepository projectedCustomerRepository, ProjectedRoomRepository projectedRoomRepository, ProjectedBookingRepository projectedBookingRepository) {
-        this.eventRepository = eventRepository;
+    public QueryHandler(ProjectedCustomerRepository projectedCustomerRepository, ProjectedRoomRepository projectedRoomRepository, ProjectedBookingRepository projectedBookingRepository) {
+        //this.eventRepository = eventRepository;
         this.projectedCustomerRepository = projectedCustomerRepository;
         this.projectedRoomRepository = projectedRoomRepository;
         this.projectedBookingRepository = projectedBookingRepository;
@@ -35,9 +37,11 @@ public class QueryHandler {
 
     public void processEvent(BookingCancelledEvent event) {
         if (projectedBookingRepository.contains(projectedBookingRepository.findByBookingId(event.getBookingId()))) {
-            projectedBookingRepository.delete(projectedBookingRepository.findByBookingId(event.getBookingId()));
 
             projectedRoomRepository.deleteBookingsByDateRange((projectedBookingRepository.findByBookingId(event.getBookingId())).getRoom(), projectedBookingRepository.findByBookingId(event.getBookingId()).getStartDate(), projectedBookingRepository.findByBookingId(event.getBookingId()).getEndDate());
+            projectedBookingRepository.delete(projectedBookingRepository.findByBookingId(event.getBookingId()));
+
+
 
             System.out.println("Booking cancelled: " + event.getBookingId());
         }
@@ -49,7 +53,11 @@ public class QueryHandler {
     public void processEvent(RoomBookedEvent event) {
         if (!projectedBookingRepository.contains(projectedBookingRepository.findByBookingId(event.getBookingId()))) {
             projectedBookingRepository.save(new ProjectedBooking(event.getBookingId(), projectedRoomRepository.findByRoomNumber(event.getRoom().getRoomNumber()), projectedCustomerRepository.findByCustomerName(event.getCustomer().getName()), event.getStartTime(), event.getEndTime()));
+            projectedRoomRepository.findByRoomNumber(event.getRoom().getRoomNumber()).getBookedFor().add(event.getStartTime());
+            projectedRoomRepository.findByRoomNumber(event.getRoom().getRoomNumber()).getBookedFor().add(event.getEndTime());
+
         }
+
 
         System.out.println("Room booked: " + event.getBookingId());
     }
@@ -110,12 +118,12 @@ public class QueryHandler {
 
     public void getAllEvents() {
 
-        eventRepository.getAllEvents();
+        //eventRepository.getAllEvents();
     }
 
     public void restoreEvents() {
 
-        eventRepository.restoreEvents();
+        //eventRepository.restoreEvents();
     }
 
 }

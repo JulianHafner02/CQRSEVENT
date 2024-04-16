@@ -30,6 +30,15 @@ public class CustomerRepository {
         return new HashSet<>(customers);
     }
 
+    public Customer findByCustomerName(String customerName) {
+        for (Customer customer : customers) {
+            if (customer.getName().equals(customerName)) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
     public boolean isEmpty() {
         return customers.isEmpty();
     }

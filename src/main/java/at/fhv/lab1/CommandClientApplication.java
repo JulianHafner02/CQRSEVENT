@@ -38,19 +38,8 @@ public class CommandClientApplication implements CommandLineRunner{
 
 
     //TODO Ansteuern über CommandRunner (cmd/cli) ohne große validierung der ders verwendet woars au wies
-    //TODO 2 clis (query and command)
-    //TODO UI für dern Bumms macha optional
-    //TODO Rollback der ganzen Events für die query sachen
-    //TODO alle queries sachen löschen
-    //TODO QueryHandler macha
-    //TODO Events in Datei speichern (text oder json) optional
+    //TODO Rollback der ganzen Events für die query sachen (anscheinend vom eventbus us)
     //TODO Dokumentation macha (klassendiagramm und die ansteuerung der commands)
-    //TODO beschreibung wie ma da cli verwendet
-    //TODO create customer und create room wäre optional
-    //TODO bei da process events sött ma die write db apassa und ned nur die read db (oder nur die write db apassa und denn wieda events macha???)
-
-
-
 
 
 
@@ -79,8 +68,6 @@ public class CommandClientApplication implements CommandLineRunner{
 
         System.out.println("Running");
 
-        initialiseData();
-
         // Read input from the command line
         Scanner scanner = new Scanner(System.in);
         String input;
@@ -88,52 +75,69 @@ public class CommandClientApplication implements CommandLineRunner{
             System.out.println("Enter a command:");
             input = scanner.nextLine();
             System.out.println("You entered: " + input);
+
+
+            if (input.startsWith("intialize")) {
+                initialiseData();
+            }
+            else if (input.startsWith("createroom")) {
+
+                String roomNumber = input.split(" ")[1];
+                int capacity = Integer.parseInt(input.split(" ")[2]);
+                CreateRoomCommand createRoomCommand = new CreateRoomCommand(roomNumber, capacity);
+                commandHandler.handleCommand(createRoomCommand);
+
+            }else if(input.startsWith("createcustomer")) {
+
+                String name = input.split(" ")[1];
+                String address = input.split(" ")[2];
+                LocalDate dateOfBirth = LocalDate.of(Integer.parseInt(input.split(" ")[3]), Integer.parseInt(input.split(" ")[4]), Integer.parseInt(input.split(" ")[5]));
+                CreateCustomerCommand createCustomerCommand = new CreateCustomerCommand(name, address, dateOfBirth);
+                commandHandler.handleCommand(createCustomerCommand);
+            }else if(input.startsWith("bookroom")) {
+
+                String bookingId = input.split(" ")[1];
+                String roomNumber = input.split(" ")[2];
+                String customerName = input.split(" ")[3];
+                LocalDate dateFrom = LocalDate.of(Integer.parseInt(input.split(" ")[4]), Integer.parseInt(input.split(" ")[5]), Integer.parseInt(input.split(" ")[6]));
+                LocalDate dateTo = LocalDate.of(Integer.parseInt(input.split(" ")[7]), Integer.parseInt(input.split(" ")[8]), Integer.parseInt(input.split(" ")[9]));
+                BookRoomCommand bookRoomCommand = new BookRoomCommand(bookingId, roomRepository.findByRoomNumber(roomNumber), customerRepository.findByCustomerName(customerName), dateFrom, dateTo);
+                commandHandler.handleCommand(bookRoomCommand);
+            }else if (input.startsWith("cancelbooking")) {
+
+                String bookingId = input.split(" ")[1];
+                CancelBookingCommand cancelBookingCommand = new CancelBookingCommand(bookingId);
+                commandHandler.handleCommand(cancelBookingCommand);
+            }
+
         } while (!input.equals("exit"));
-
-
-
-
-        //TODO scan logic for commands and handle them accordingly
 
     }
 
     public void initialiseData() {
 
         // Create some sample data for rooms, bookings, and customers
-        Room room1 = new Room("101", 2);
-        Room room2 = new Room("102", 3);
-        Room room3 = new Room("103", 1);
-        roomRepository.save(room1);
-        roomRepository.save(room2);
-        roomRepository.save(room3);
 
-        Customer customer1 = new Customer( "John Doe", "123 Main St", LocalDate.of(1990, 5, 15));
-        Customer customer2 = new Customer( "Jane Smith", "456 Elm St", LocalDate.of(1985, 8, 20));
-        customerRepository.save(customer1);
-        customerRepository.save(customer2);
+        CreateRoomCommand createRoomCommand1 = new CreateRoomCommand("201", 2);
+        CreateRoomCommand createRoomCommand2 = new CreateRoomCommand("202", 3);
+        CreateRoomCommand createRoomCommand3 = new CreateRoomCommand("203", 4);
+        commandHandler.handleCommand(createRoomCommand1);
+        commandHandler.handleCommand(createRoomCommand2);
+        commandHandler.handleCommand(createRoomCommand3);
 
-        Booking booking1 = new Booking("1", room1, customer1, LocalDate.of(2024, 4, 15), LocalDate.of(2024, 4, 18));
-        Booking booking2 = new Booking("2", room2, customer2, LocalDate.of(2024, 5, 10), LocalDate.of(2024, 5, 12));
-        bookingRepository.save(booking1);
-        bookingRepository.save(booking2);
+        CreateCustomerCommand createCustomerCommand1 = new CreateCustomerCommand("John", "1234 Main St", LocalDate.of(1990, 5, 15));
+        CreateCustomerCommand createCustomerCommand2 = new CreateCustomerCommand("Jane", "456 Main St", LocalDate.of(1995, 8, 20));
+        commandHandler.handleCommand(createCustomerCommand1);
+        commandHandler.handleCommand(createCustomerCommand2);
 
+        BookRoomCommand bookRoomCommand = new BookRoomCommand("1", roomRepository.findByRoomNumber("201") , customerRepository.findByCustomerName("John"), LocalDate.of(2024, 4, 15), LocalDate.of(2024, 4, 18));
+        BookRoomCommand bookRoomCommand2 = new BookRoomCommand("2", roomRepository.findByRoomNumber("202") , customerRepository.findByCustomerName("Jane"), LocalDate.of(2024, 4, 15), LocalDate.of(2024, 4, 18));
+        commandHandler.handleCommand(bookRoomCommand);
+        commandHandler.handleCommand(bookRoomCommand2);
 
-        BookRoomCommand bookRoomCommand1 = new BookRoomCommand("3", room3, customer1, LocalDate.of(2024, 4, 15), LocalDate.of(2024, 4, 18));
-        BookRoomCommand bookRoomCommand2 = new BookRoomCommand("4", room2, customer2, LocalDate.of(2024, 5, 10), LocalDate.of(2024, 5, 12));
-        commandHandler.handleCommand(bookRoomCommand1);
 
         CancelBookingCommand cancelBookingCommand1 = new CancelBookingCommand("1");
-        CancelBookingCommand cancelBookingCommand2 = new CancelBookingCommand("2");
         commandHandler.handleCommand(cancelBookingCommand1);
-
-        CreateCustomerCommand createCustomerCommand1 = new CreateCustomerCommand("John Doe 2", "1234 Main St", LocalDate.of(1990, 5, 15));
-        CreateCustomerCommand createCustomerCommand2 = new CreateCustomerCommand("Jane Smith 2", "5678 Elm St", LocalDate.of(1985, 8, 20));
-        commandHandler.handleCommand(createCustomerCommand1);
-
-        CreateRoomCommand createRoomCommand1 = new CreateRoomCommand("104", 4);
-        CreateRoomCommand createRoomCommand2 = new CreateRoomCommand("105", 2);
-        commandHandler.handleCommand(createRoomCommand1);
-
 
     }
 
