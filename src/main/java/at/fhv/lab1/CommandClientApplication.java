@@ -29,22 +29,16 @@ import java.util.Scanner;
 @ComponentScan("at.fhv.lab1.commandclient")
 public class CommandClientApplication implements CommandLineRunner{
 
-
-    //private final EventPublisher publisher;
     private final RoomRepository roomRepository;
     private final BookingRepository bookingRepository;
     private final CustomerRepository customerRepository;
     private final CommandHandler commandHandler;
 
 
-    //TODO Ansteuern über CommandRunner (cmd/cli) ohne große validierung der ders verwendet woars au wies
-    //TODO Rollback der ganzen Events für die query sachen (anscheinend vom eventbus us)
     //TODO Dokumentation macha (klassendiagramm und die ansteuerung der commands)
-
-
+    //TODO akle code cleanup
 
     public CommandClientApplication(RoomRepository roomRepository, BookingRepository bookingRepository, CustomerRepository customerRepository, CommandHandler commandHandler) {
-        //this.publisher = publisher;
         this.roomRepository = roomRepository;
         this.bookingRepository = bookingRepository;
         this.customerRepository = customerRepository;
@@ -57,15 +51,6 @@ public class CommandClientApplication implements CommandLineRunner{
 
     public void run(String ... args) throws Exception {
 
-        /*
-        Event event = new Event();
-        event.setContent("This is the content!");
-        event.setCustomer("Customer1");
-        event.setTimestamp(System.currentTimeMillis());
-        System.out.println("Result: " + publisher.publishEvent(event));
-        publisher.publishEvent(event);
-         */
-
         System.out.println("Running");
 
         // Read input from the command line
@@ -77,7 +62,7 @@ public class CommandClientApplication implements CommandLineRunner{
             System.out.println("You entered: " + input);
 
 
-            if (input.startsWith("intialize")) {
+            if (input.startsWith("initialise")) {
                 initialiseData();
             }
             else if (input.startsWith("createroom")) {
@@ -140,6 +125,4 @@ public class CommandClientApplication implements CommandLineRunner{
         commandHandler.handleCommand(cancelBookingCommand1);
 
     }
-
-
 }

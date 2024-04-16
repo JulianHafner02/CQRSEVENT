@@ -52,7 +52,12 @@ public class CommandHandler {
             // Handle non-existing customer or room
             // You can throw an exception or return an error message
             System.out.println("Non-existing customer or room");
-        } else {
+        } else if (bookingRepository.contains(bookingRepository.findById(command.getBookingId()))) {
+            // Handle existing reservation
+            // You can throw an exception or return an error message
+            System.out.println("Existing reservation");
+        }
+        else {
             bookingRepository.save(new Booking(command.getBookingId(), command.getRoom(), command.getCustomer(), command.getStartTime(), command.getEndTime()));
             // Nach erfolgreicher Verarbeitung des Befehls, Ereignis erstellen und veröffentlichen
             RoomBookedEvent event = new RoomBookedEvent();
@@ -64,7 +69,6 @@ public class CommandHandler {
             System.out.println(event);
             eventPublisher.publishEvent(event);
         }
-
 
     }
 
@@ -140,7 +144,5 @@ public class CommandHandler {
             System.out.println(event);
             eventPublisher.publishEvent(event);
         }
-
     }
-
 }

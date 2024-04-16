@@ -15,6 +15,4 @@ public class ProjectedRoom {
     private String roomNumber;
     private int capacity;
     private ArrayList<LocalDate> bookedFor = new ArrayList<>();
-
 }
-

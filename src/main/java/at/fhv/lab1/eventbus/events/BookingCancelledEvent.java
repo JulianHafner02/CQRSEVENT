@@ -8,8 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class BookingCancelledEvent {
-
     private String bookingId;
-
-
 }

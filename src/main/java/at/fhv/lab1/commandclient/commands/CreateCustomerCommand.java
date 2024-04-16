@@ -14,5 +14,4 @@ public class CreateCustomerCommand {
     private String name;
     private String address;
     private LocalDate dateOfBirth;
-
 }

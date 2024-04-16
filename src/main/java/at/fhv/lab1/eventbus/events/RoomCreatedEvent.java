@@ -8,7 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class RoomCreatedEvent {
-
     private String roomNumber;
     private int capacity;
 }

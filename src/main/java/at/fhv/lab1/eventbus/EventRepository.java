@@ -16,9 +16,7 @@ public class EventRepository {
     private final List<RoomCreatedEvent> roomCreatedEvents = new ArrayList<>();
 
     public void processEvent(Event event) {
-        // TODO: store events in log/DB
         events.add(event);
-        // TODO: notify subscribed read repositories
         System.out.println("Processing Event");
     }
 
@@ -42,24 +40,7 @@ public class EventRepository {
         System.out.println("Processing RoomCreatedEvent: " + event);
     }
 
-    public void restoreEvents() {
-        for (RoomBookedEvent event : roomBookedEvents) {
-            processEvent(event);
-        }
-        for (BookingCancelledEvent event : bookingCancelledEvents) {
-            processEvent(event);
-        }
-        for (CustomerCreatedEvent event : customerCreatedEvents) {
-            processEvent(event);
-        }
-        for (RoomCreatedEvent event : roomCreatedEvents) {
-            processEvent(event);
-        }
-
-        System.out.println("Events restored.");
-    }
-
-    public void getAllEvents() {
+    public void printAllEvents() {
 
         for (RoomBookedEvent event : roomBookedEvents) {
             System.out.println(event);
@@ -75,6 +56,24 @@ public class EventRepository {
         }
     }
 
+    public List<Event> getAllEvents() {
+        return new ArrayList<>(events);
+    }
 
+    public List<RoomBookedEvent> getAllRoomBookedEvents() {
+        return new ArrayList<>(roomBookedEvents);
+    }
 
+    public List<BookingCancelledEvent> getAllBookingCancelledEvents() {
+        return new ArrayList<>(bookingCancelledEvents);
+
+    }
+
+    public List<CustomerCreatedEvent> getAllCustomerCreatedEvents() {
+        return new ArrayList<>(customerCreatedEvents);
+    }
+
+    public List<RoomCreatedEvent> getAllRoomCreatedEvents() {
+        return new ArrayList<>(roomCreatedEvents);
+    }
 }

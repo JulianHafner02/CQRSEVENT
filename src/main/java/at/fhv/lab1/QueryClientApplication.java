@@ -77,11 +77,6 @@ public class QueryClientApplication implements CommandLineRunner {
 
         } while (!input.equals("exit"));
 
-
-
-
-        //TODO scan logic for commands and handle them accordingly
-
     }
 
 }

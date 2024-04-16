@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class CreateRoomCommand {
-
     private String roomNumber;
     private int capacity;
 }

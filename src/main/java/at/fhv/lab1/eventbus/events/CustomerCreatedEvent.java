@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 public class CustomerCreatedEvent {
-
     private String name;
     private String address;
     private LocalDate dateOfBirth;

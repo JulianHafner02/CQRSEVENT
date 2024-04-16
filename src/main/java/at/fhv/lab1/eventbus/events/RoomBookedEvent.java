@@ -18,5 +18,4 @@ public class RoomBookedEvent {
     private Customer customer;
     private LocalDate startTime;
     private LocalDate endTime;
-
 }

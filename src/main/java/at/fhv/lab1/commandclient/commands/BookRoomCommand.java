@@ -20,6 +20,4 @@ public class BookRoomCommand {
     private Customer customer;
     private LocalDate startTime;
     private LocalDate endTime;
-
-
 }
