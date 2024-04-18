@@ -23,7 +23,6 @@ import java.util.ArrayList;
 @Component
 public class QueryHandler {
 
-    //private final EventRepository eventRepository;
     private final ProjectedCustomerRepository projectedCustomerRepository;
     private final ProjectedRoomRepository projectedRoomRepository;
     private final ProjectedBookingRepository projectedBookingRepository;
@@ -114,16 +113,6 @@ public class QueryHandler {
         projectedBookingRepository.deleteAll();
 
         System.out.println("All query repositories deleted");
-    }
-
-    public void getAllEvents() {
-
-        //eventRepository.getAllEvents();
-    }
-
-    public void restoreEvents() {
-
-        //eventRepository.restoreEvents();
     }
 
 }

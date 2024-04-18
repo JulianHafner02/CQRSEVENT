@@ -38,7 +38,6 @@ public class CommandHandler {
 
 
     public void handleCommand(BookRoomCommand command) {
-        // Validieren Sie den Befehl
 
         if (command.getCustomer() == null || command.getRoom() == null || command.getStartTime() == null || command.getEndTime() == null) {
             // Handle null fields
@@ -73,7 +72,6 @@ public class CommandHandler {
     }
 
     public void handleCommand(CancelBookingCommand command) {
-        // Validieren Sie den Befehl
 
         if (!bookingRepository.contains(bookingRepository.findById(command.getBookingId()))) {
             // Handle non-existing reservation
@@ -97,7 +95,7 @@ public class CommandHandler {
     }
 
     public void handleCommand(CreateCustomerCommand command) {
-        // Validieren Sie den Befehl
+
         if (command.getName() == null || command.getAddress() == null || command.getDateOfBirth() == null) {
             // Handle null fields
             // You can throw an exception or return an error message
@@ -124,7 +122,7 @@ public class CommandHandler {
     }
 
     public void handleCommand(CreateRoomCommand command) {
-        // Validieren Sie den Befehl
+
         if (command.getRoomNumber() == null) {
             // Handle null fields
             // You can throw an exception or return an error message

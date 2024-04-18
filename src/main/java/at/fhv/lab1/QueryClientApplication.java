@@ -51,10 +51,6 @@ public class QueryClientApplication implements CommandLineRunner {
 
             if (input.startsWith("deletequeries")) {
                 queryHandler.deleteQueries();
-            } else if (input.startsWith("restore")) {
-                queryHandler.restoreEvents();
-            } else if (input.startsWith("getall")) {
-                queryHandler.getAllEvents();
 
             } else if (input.startsWith("getcustomers")) {
                 String name = input.split(" ")[1];

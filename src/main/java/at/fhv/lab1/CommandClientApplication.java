@@ -35,9 +35,6 @@ public class CommandClientApplication implements CommandLineRunner{
     private final CommandHandler commandHandler;
 
 
-    //TODO Dokumentation macha (klassendiagramm und die ansteuerung der commands)
-    //TODO akle code cleanup
-
     public CommandClientApplication(RoomRepository roomRepository, BookingRepository bookingRepository, CustomerRepository customerRepository, CommandHandler commandHandler) {
         this.roomRepository = roomRepository;
         this.bookingRepository = bookingRepository;
