@@ -107,8 +107,8 @@ public class CommandClientApplication implements CommandLineRunner{
         commandHandler.handleCommand(createRoomCommand2);
         commandHandler.handleCommand(createRoomCommand3);
 
-        CreateCustomerCommand createCustomerCommand1 = new CreateCustomerCommand("John", "1234 Main St", LocalDate.of(1990, 5, 15));
-        CreateCustomerCommand createCustomerCommand2 = new CreateCustomerCommand("Jane", "456 Main St", LocalDate.of(1995, 8, 20));
+        CreateCustomerCommand createCustomerCommand1 = new CreateCustomerCommand("John", "1234_Main_St", LocalDate.of(1990, 5, 15));
+        CreateCustomerCommand createCustomerCommand2 = new CreateCustomerCommand("Jane", "456_Main_St", LocalDate.of(1995, 8, 20));
         commandHandler.handleCommand(createCustomerCommand1);
         commandHandler.handleCommand(createCustomerCommand2);
 
