@@ -49,8 +49,8 @@ public class QueryClientApplication implements CommandLineRunner {
             input = scanner.nextLine();
             System.out.println("You entered: " + input);
 
-            if (input.startsWith("deletequeries")) {
-                queryHandler.deleteQueries();
+            if (input.startsWith("deletequerymodel")) {
+                queryHandler.deleteQueryModels();
 
             } else if (input.startsWith("getcustomers")) {
                 String name = input.split(" ")[1];

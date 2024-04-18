@@ -107,7 +107,7 @@ public class QueryHandler {
         projectedRoomRepository.getFreeRooms(query.getStartDate(), query.getEndDate(), query.getCapacity()).forEach(System.out::println);
     }
 
-    public void deleteQueries() {
+    public void deleteQueryModels() {
         projectedCustomerRepository.deleteAll();
         projectedRoomRepository.deleteAll();
         projectedBookingRepository.deleteAll();
